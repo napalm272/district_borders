@@ -1,0 +1,50 @@
+District Border calculations
+
+Given a list of polygons, determine which edges are coincident, and produce a graph of border lines. The border lines should be extended as far as possible, so there are no colinear and contiguous border line segments.
+
+All points are given as integers, but the integers can be arbitrarily large.
+The polygons do not have to be convex, but they are not self intersecting.
+
+Also find the perimeter polygon of the entire set of districts, and any interior holes.
+
+
+A medium-difficulty example:
+
+a----------b
+|          |
+c---d--e---f
+|   |**|   |
+g-h-i--j   |
+| |     \  |
+k-l------m-n
+
+Key:
+a-z are points
+-, |, /, and \ are border lines
+* are interior holes.
+
+Input polygons:
+abfc
+cdig
+efnmj
+ghlk
+hjml
+
+Output:
+border lines:
+a-b
+a-k
+b-n
+c-f
+d-i
+e-j
+g-j
+h-l
+j-m
+k-n
+
+perimeter:
+abnk
+
+holes:
+deji
