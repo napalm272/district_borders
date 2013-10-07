@@ -1,4 +1,8 @@
 def polygons_to_graph(polygons):
+    """
+    Construct a graph out of a list of polygons. Each polygon is specified as a
+    list of points in clockwise order.
+    """
     graph = {}
 
     # Initialize graph nodes.
@@ -20,6 +24,8 @@ def polygons_to_graph(polygons):
 
 def merge_corners_onto_borders(graph):
     """
+    Find the places where corners intersect a border line segment, and merge
+    them into the graph at that point.
     """
     # Iterate over the border line segments, and find which grid points each
     # one passes through.
@@ -44,6 +50,7 @@ def merge_corners_onto_borders(graph):
 
 def graph_edges(graph):
     """
+    Find the unique edges of a graph.
     """
     edges = set()
     for node, neighbors in graph.items():
@@ -55,7 +62,7 @@ def graph_edges(graph):
 
 def segment_lattice_points(a, b):
     """
-
+    Find all integer lattice points which intersect the given line segment.
     """
     # Find the slope of the line segment as a lowest-terms fraction.
     ax, ay = a
