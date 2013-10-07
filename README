@@ -48,3 +48,15 @@ abnk
 
 holes:
 deji
+
+
+Algorithm notes:
+
+1. Normalize each district to be expressed as a clockwise series of points,
+    with the first point in the upper-left.
+2. Put polygons into a graph, with district corners as nodes, and borders as the
+    graph edges. Handle coincident corners in this step.
+3. Find corners which lie on top of another district's border. This is done by
+    listing out the integer points which are crossed by each border, and
+    checking them against the set of corners.
+4. Split borders when a node intersects them.
