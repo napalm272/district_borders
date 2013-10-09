@@ -64,18 +64,12 @@ def segment_lattice_points(a, b):
     """
     Find all integer lattice points which intersect the given line segment.
     """
-    # Find the slope of the line segment as a lowest-terms fraction.
-    ax, ay = a
-    bx, by = b
-    dx = bx - ax
-    dy = by - ay
-
-    divisor = gcd(dx, dy)
-    step_x = dx // divisor
-    step_y = dy // divisor
+    step_x, step_y = fraction_slope(a, b)
 
     # Iterate over points on the segment, excluding the start and end points.
     points = []
+    ax, ay = a
+    bx, by = b
     x = ax + step_x
     y = ay + step_y
     while x != bx or y != by:
@@ -84,6 +78,21 @@ def segment_lattice_points(a, b):
         y += step_y
 
     return points
+
+
+def fraction_slope(a, b):
+    """
+    Find the slope of the line segment as a lowest-terms fraction.
+    """
+    ax, ay = a
+    bx, by = b
+    dx = bx - ax
+    dy = by - ay
+    divisor = gcd(dx, dy)
+    return (
+        dx // divisor,
+        dy // divisor,
+    )
 
 
 def gcd(a, b):
@@ -100,3 +109,36 @@ def gcd(a, b):
         a = b
         b = temp
     return a
+
+
+def continue_straight_lines(graph):
+    """
+    Find multiple edges creating a continuous straight line.
+    Make them "skip" over connections to create uninterrupted edges.
+    """
+    # For each node, find local continuations.
+    for node in list(graph.keys()):
+        neighbors = list(graph[node])
+
+        # Find slopes of connected edges.
+        slopes = []
+        for neighbor in neighbors:
+            slopes.append(fraction_slope(node, neighbor))
+
+        # Check all pairs for matching slopes.
+        for left_index in range(len(slopes)):
+            for right_index in range(left_index + 1, len(slopes)):
+                if (
+                    slopes[left_index][0] == slopes[right_index][0] and
+                    slopes[left_index][1] == slopes[right_index][1]
+                ):
+                    # We have a match, so connect across this node.
+                    left = neighbors[left_index]
+                    right = neighbors[right_index]
+
+                    graph[node].remove(left)
+                    graph[left].remove(node)
+                    graph[node].remove(right)
+                    graph[right].remove(node)
+                    graph[left].add(right)
+                    graph[right].add(left)

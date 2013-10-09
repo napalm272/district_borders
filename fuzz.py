@@ -4,10 +4,9 @@ import vec
 from district_borders import (
     polygons_to_graph,
     merge_corners_onto_borders,
+    continue_straight_lines,
     graph_edges,
 )
-
-import sys
 
 
 def rect_points(rect):
@@ -102,7 +101,7 @@ def draw_graph(graph):
     gap_size = 0.25
 
     p = canoepaddle.Pen()
-    p.stroke_mode(0.2, 'black')
+    p.stroke_mode(0.1, 'black')
     for a, b in graph_edges(graph):
         gap = vec.norm(vec.vfrom(a, b), gap_size)
         p.move_to(vec.add(a, gap))
@@ -126,6 +125,7 @@ if __name__ == '__main__':
 
     graph = polygons_to_graph(polygons)
     merge_corners_onto_borders(graph)
+    continue_straight_lines(graph)
 
     paper = canoepaddle.Paper()
     paper.merge(draw_polygons(polygons))

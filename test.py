@@ -5,6 +5,7 @@ from district_borders import (
     graph_edges,
     segment_lattice_points,
     merge_corners_onto_borders,
+    continue_straight_lines,
 )
 
 
@@ -151,5 +152,38 @@ def test_merge_corners_onto_borders():
             d: {c},
             e: {b},
             f: {c},
+        }
+    )
+
+
+def test_continue_straight_lines():
+    # Line ACD is joined to create line AD.
+
+    #   01234
+    # 0   A
+    # 1   |
+    # 2 B-C
+    # 3   |\
+    # 4   D E
+    a = (2, 0)
+    b = (0, 2)
+    c = (2, 2)
+    d = (2, 4)
+    e = (4, 4)
+    graph = {
+        a: {c},
+        b: {c},
+        c: {a, b, d, e},
+        d: {c},
+        e: {c},
+    }
+    continue_straight_lines(graph)
+    assert_equal(
+        graph,
+        {
+            a: {d}, d: {a},
+            b: {c},
+            c: {b, e},
+            e: {c},
         }
     )
