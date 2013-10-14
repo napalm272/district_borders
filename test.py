@@ -187,3 +187,12 @@ def test_continue_straight_lines():
             e: {c},
         }
     )
+
+def test_disjoint():
+    #this test will be stuck in an infinite loop
+    poly1=[(8,-16),(8,0),(0,0),(0,-8)]
+    poly2=[(-12,36),(0,36),(0,48),(-12,48)]
+    poly3=[(-12,12),(0,12),(0,-8),(-12,4)]
+    polys=[poly1,poly2,poly3]
+    graph=polygons_to_graph(polys)
+    merge_corners_onto_borders(graph)
